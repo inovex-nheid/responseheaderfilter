@@ -89,17 +89,17 @@ public class ResponseHeaderFilter implements Filter {
     confReloadInfo = new ConfReloadInfo();
     String reloadCheckIntervalStr = filterConfig.getInitParameter("reloadCheckInterval");
     //if web.xml filter definition has no "reloadCheckInterval" applied, default values in ConfReloadInfo are used  
-    if(StringUtils.isNotEmpty(reloadCheckIntervalStr)){
-      Integer reloadCheckInterval = Integer.valueOf(reloadCheckIntervalStr);
-      if(reloadCheckInterval > 0){
-        confReloadInfo.reloadEnabled = true;
-        confReloadInfo.reloadCheckInterval = reloadCheckInterval;
-      }else{
-        //zero or negative values means don't ever reload
-        confReloadInfo.reloadEnabled = false;
-        confReloadInfo.reloadCheckInterval = 0;
-      }
-    }
+//    if(StringUtils.isNotEmpty(reloadCheckIntervalStr)){
+//      Integer reloadCheckInterval = Integer.valueOf(reloadCheckIntervalStr);
+//      if(reloadCheckInterval > 0){
+//        confReloadInfo.reloadEnabled = true;
+//        confReloadInfo.reloadCheckInterval = reloadCheckInterval;
+//      }else{
+//        //zero or negative values means don't ever reload
+//        confReloadInfo.reloadEnabled = false;
+//        confReloadInfo.reloadCheckInterval = 0;
+//      }
+//    }
 
     //parse all the mappings into Rules
     ConfigProcessor configProcessor = new ConfigProcessor(configFile);
@@ -130,9 +130,11 @@ public class ResponseHeaderFilter implements Filter {
    * invokes the {@link #reloadConfigIfNeeded()}
    */
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
-    if(confReloadInfo.reloadEnabled){
-      reloadConfigIfNeeded();
-    }
+
+//    we won't need config reloading in our setup, disabling it (we're having nullpointers, threadsafe issues?)
+//    if(confReloadInfo.reloadEnabled){
+//      reloadConfigIfNeeded();
+//    }
 
     HttpServletRequest request = (HttpServletRequest) servletRequest;
     HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -301,8 +303,8 @@ public class ResponseHeaderFilter implements Filter {
    * @see ConfigProcessor
    */
   private class ConfReloadInfo{
-    private boolean reloadEnabled = true;
-    private Integer reloadCheckInterval = 10;
+    private boolean reloadEnabled = false;
+    private Integer reloadCheckInterval = 0;
     private Long lastReloadCheckPerformedOn = 0l;
     private Long configFileLastModifiedTimeStamp = 0l;
   }
