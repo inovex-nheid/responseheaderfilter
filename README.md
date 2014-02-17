@@ -7,9 +7,8 @@ with some minor changes to suit a specific need.
 changes:
 - disabled configuration reloads in code
 
-
-original readme
 ====================
+### original readme
 
 ResponseHeaderFilter is a Java Web Filter for any J2EE compliant web application server (such as Resin or Tomcat), which lets you transparently set response headers for any http request. ResponseHeaderFilter abstracts the responsibility of setting these header from your code, thereby making it easy to change header policies without changing any code.
 
