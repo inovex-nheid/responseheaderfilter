@@ -79,10 +79,11 @@ public class ResponseHeaderFilter implements Filter {
     }
 
     String fullConfigFilePath = filterConfig.getServletContext().getRealPath(configFileName);
-    configFile = new File(fullConfigFilePath);
+    logger.info("configFilePath: "+fullConfigFilePath);
+    configFile = new File(configFileName);
     if(!configFile.exists() || !configFile.canRead()){
       //not expecting this, the config file should exist and be readable
-      throw new RuntimeException("Cannot initialize ResponseHeaderFilter, error reading " + configFileName);
+      throw new RuntimeException("Cannot initialize ResponseHeaderFilter, error reading " + configFileName + "in path " +fullConfigFilePath);
     }
 
     //object to hold preferences related to conf reloading
@@ -226,7 +227,7 @@ public class ResponseHeaderFilter implements Filter {
       configFile.lastModified() > confReloadInfo.configFileLastModifiedTimeStamp
     ){
       if(logger.isDebugEnabled()){
-        logger.debug("Response header manager config file has been modified, reloading now");
+        logger.error("(! this should not happen) Response header manager config file has been modified, reloading now");
       }
       long start = System.currentTimeMillis();
       confReloadInfo.configFileLastModifiedTimeStamp = configFile.lastModified();
